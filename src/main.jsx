@@ -81,9 +81,13 @@ function Auth(){
 function Dashboard({gear,lists,wishlist,listItems}){
   const total=gear.reduce((s,g)=>s+Number(g.weight_g)*Number(g.quantity),0)
   const cat=Object.entries(gear.reduce((a,g)=>({...a,[g.category||'Ohne Kategorie']:(a[g.category||'Ohne Kategorie']||0)+Number(g.weight_g)*Number(g.quantity)}),{})).sort((a,b)=>b[1]-a[1]).slice(0,6)
-  return <><div className="stats"><Stat n={gear.length} label="Artikel"/><Stat n={weight(total)} label="Gesamtgewicht Lager"/><Stat n={lists.length} label="Packlisten"/><Stat n={wishlist.length} label="Wünsche"/></div><div className="grid"><section className="card span7"><h2>Letzte Artikel</h2>{gear.slice(0,6).map(g=><div className="rowcard" key={g.id}><div><strong>{g.name}</strong><small>{g.category||'Ohne Kategorie'} · {g.location||'Kein Lagerplatz'}</small></div><b>{weight(g.weight_g*g.quantity)}</b></div>)}{!gear.length&&<Empty/>}</section><section className="card span5"><h2>Schwerste Kategorien</h2>{cat.map(([name,val])=><div className="category" key={name}><div><span>{name}</span><b>{weight(val)}</b></div><progress max={cat[0]?.[1]||1} value={val}/></div>)}{!cat.length&&<Empty/>}</section></div></>
+  const articlesWithWeight=gear.filter(g=>Number.isFinite(Number(g.weight_g))&&Number(g.weight_g)>=0)
+  const lightest=articlesWithWeight.length?articlesWithWeight.reduce((a,b)=>Number(b.weight_g)<Number(a.weight_g)?b:a):null
+  const heaviest=articlesWithWeight.length?articlesWithWeight.reduce((a,b)=>Number(b.weight_g)>Number(a.weight_g)?b:a):null
+  return <><div className="stats"><Stat n={gear.length} label="Artikel"/><Stat n={weight(total)} label="Gesamtgewicht Lager"/><Stat n={lists.length} label="Packlisten"/><Stat n={wishlist.length} label="Wünsche"/><ItemStat item={lightest} label="Leichtester Artikel"/><ItemStat item={heaviest} label="Schwerster Artikel"/></div><div className="grid"><section className="card span7"><h2>Letzte Artikel</h2>{gear.slice(0,6).map(g=><div className="rowcard" key={g.id}><div><strong>{g.name}</strong><small>{g.category||'Ohne Kategorie'} · {g.location||'Kein Lagerplatz'}</small></div><b>{weight(g.weight_g*g.quantity)}</b></div>)}{!gear.length&&<Empty/>}</section><section className="card span5"><h2>Schwerste Kategorien</h2>{cat.map(([name,val])=><div className="category" key={name}><div><span>{name}</span><b>{weight(val)}</b></div><progress max={cat[0]?.[1]||1} value={val}/></div>)}{!cat.length&&<Empty/>}</section></div></>
 }
 function Stat({n,label}){return <div className="stat"><strong>{n}</strong><span>{label}</span></div>}
+function ItemStat({item,label}){return <div className="stat item-stat"><strong>{item?.name||'–'}</strong><span>{label}{item?` · ${weight(item.weight_g)}`:''}</span></div>}
 function Empty(){return <div className="empty">Noch keine Daten vorhanden.</div>}
 
 function GearView({gear,refreshAll,setMessage}){
