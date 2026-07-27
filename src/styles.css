@@ -6,3 +6,26 @@
 .gear-filterbar{grid-template-columns:minmax(220px,2fr) minmax(155px,1fr) minmax(155px,1fr) minmax(155px,1fr) auto}.selectionbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0 12px;padding:10px 12px;background:#f5f8f6;border:1px solid #dce5df;border-radius:10px;color:#52655a;font-size:13px;font-weight:700}.checkcol{width:42px;text-align:center}.checkcol input{width:20px;height:20px;min-height:0;accent-color:#315f49}.selected-row{background:#edf6f0}.bulk-delete:disabled,.secondary:disabled{opacity:.45;cursor:not-allowed}
 @media(max-width:1050px){.gear-filterbar{grid-template-columns:1fr 1fr}.gear-filterbar .search{grid-column:1/-1}.gear-filterbar button{grid-column:1/-1}}
 @media(max-width:650px){.selectionbar{align-items:stretch;flex-direction:column}.selectionbar .actions{display:grid;grid-template-columns:1fr}.gear-filterbar{grid-template-columns:1fr}.gear-filterbar .search,.gear-filterbar button{grid-column:auto}}
+
+.packlist-add-controls{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  align-items:end;
+  margin:16px 0 10px;
+  padding:14px;
+  background:#f7faf8;
+  border:1px solid #cfded5;
+  border-radius:12px;
+}
+.packlist-add-controls label{font-weight:700;color:#26352d}
+.packlist-add-controls select{
+  min-height:46px;
+  font-size:16px;
+  color:#17212b;
+  background:#fff;
+  border:1px solid #9fb3a7;
+}
+.packlist-add-controls select option{color:#17212b;background:#fff}
+.packlist-add-controls .primary{min-height:46px;margin-bottom:0}
+@media(max-width:650px){.packlist-add-controls{grid-template-columns:1fr}.packlist-add-controls .primary{width:100%}}
